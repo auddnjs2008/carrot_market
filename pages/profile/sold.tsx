@@ -1,14 +1,14 @@
-import type { NextPage } from "next";
-import Layout from "../components/layout";
+import { NextPage } from "next";
+import Layout from "../../components/layout";
 
-const Home: NextPage = () => {
+const Sold: NextPage = () => {
   return (
-    <Layout title="홈" hasTabBar>
-      <div className="flex flex-col space-y-5 divide-y-[1px] ">
+    <Layout canGoBack>
+      <div className="flex flex-col space-y-5 py-10">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
           <div
             key={i}
-            className="flex  px-4 py-4 cursor-pointer justify-between "
+            className="flex px-4 border-b pb-4 cursor-pointer justify-between"
           >
             <div className="flex  space-x-4">
               <div className="w-20 h-20 bg-gray-400 rounded-md" />
@@ -58,26 +58,9 @@ const Home: NextPage = () => {
             </div>
           </div>
         ))}
-        <button className="fixed hover:bg-orange-500 cursor-pointer transition-colors bottom-24 right-5 shadow-xl bg-orange-400 rounded-full p-4 text-white">
-          <svg
-            className="h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-        </button>
       </div>
     </Layout>
   );
 };
 
-export default Home;
+export default Sold;
