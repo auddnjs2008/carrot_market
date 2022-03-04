@@ -29,17 +29,33 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar) setAvatarPreview(`https://imagedelivery.net/gVd53M-5CbHwtF6A9rt30w/${user?.avatar}/avatar`);
   }, [user, setValue])
   const [editProfile, { data, loading }] = useMutation<EditProfileResponse>(`/api/users/me`)
-  const onValid = ({ email, phone, name, avatar }: EditProfileForm) => {
+  const onValid = async ({ email, phone, name, avatar }: EditProfileForm) => {
 
     if (loading) return;
 
     if (email === "" && phone === "" && name === "") {
       return setError("formErrors", { message: "Email OR Phone number are required . you need to choose one" })
     }
+    if (avatar && avatar.length > 0 && user) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json()
 
-    editProfile({ email, phone, name });
+      const form = new FormData();
+      form.append("file", avatar[0], user?.id + "");
+      const { result: { id } } = await (await fetch(uploadURL, {
+        method: "POST",
+        body: form,
+      })
+      ).json();
+
+      editProfile({ email, phone, name, avatarId: id });
+
+    } else {
+      editProfile({ email, phone, name });
+
+    }
   }
 
   useEffect(() => {

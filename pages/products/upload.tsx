@@ -5,7 +5,7 @@ import Layout from "@components/layout";
 import TextArea from "@components/textarea";
 import { useForm } from 'react-hook-form';
 import useMutation from '@libs/client/useMutation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Product } from '@prisma/client';
 import { useRouter } from 'next/router';
 import useUser from '@libs/client/useUser';
@@ -15,6 +15,7 @@ interface UploadProductForm {
   name: string;
   price: number;
   description: string;
+  photo: FileList;
 }
 interface UploadProductMutation {
   ok: boolean;
@@ -24,23 +25,44 @@ interface UploadProductMutation {
 const Upload: NextPage = () => {
   const router = useRouter();
   const { user } = useUser();
-  const { register, handleSubmit } = useForm<UploadProductForm>();
+  const { register, handleSubmit, watch } = useForm<UploadProductForm>();
   const [uploadProduct, { loading, data }] = useMutation<UploadProductMutation>("/api/products")
-  const onValid = (data: UploadProductForm) => {
+  const onValid = async ({ name, price, description }: UploadProductForm) => {
     if (loading) return;
-    uploadProduct(data);
+    if (photo && photo.length > 0) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+      const form = new FormData();
+      form.append("file", photo[0], name);
+      const { result: { id } } = await (await fetch(uploadURL, { method: "POST", body: form })).json()
+      uploadProduct({ name, price, description, photoId: id });
+    } else {
+      uploadProduct({ name, price, description });
+    }
   }
+
+
+
 
   useEffect(() => {
     if (data?.ok) {
       router.push(`/products/${data.product.id}`)
     }
   }, [data, router])
+
+  const photo = watch("photo");
+  const [photoPreview, setPhotoPreview] = useState("");
+  useEffect(() => {
+    if (photo && photo.length > 0) {
+      const file = photo[0];
+      setPhotoPreview(URL.createObjectURL(file));
+    }
+  }, [photo])
+
   return (
     <Layout canGoBack title="Upload Product">
       <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)}>
         <div>
-          <label className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">
+          {photoPreview ? <img src={photoPreview} className="w-full  text-gray-600 aspect-video  h-46 rounded-md" /> : <label className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">
             <svg
               className="h-12 w-12"
               stroke="currentColor"
@@ -55,8 +77,8 @@ const Upload: NextPage = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <input className="hidden" type="file" />
-          </label>
+            <input {...register("photo")} accept="image/*" className="hidden" type="file" />
+          </label>}
         </div>
         <Input register={register("name", { required: true })} required label="Name" name="name" type="text" />
         <Input
