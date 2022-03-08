@@ -8,10 +8,29 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   if (req.method === "GET") {
-    // const {
-    //   session: { user },
-    // } = req;
-    // console.log(user);
+    const {
+      session: { user },
+    } = req;
+
+    const myCreaterooms = await client.chatRoom.findMany({
+      where: {
+        createdById: user?.id,
+      },
+    });
+
+    const otherCreaterooms = await client.chatRoom.findMany({
+      where: {
+        createdForId: user?.id,
+      },
+      include: {
+        createdBy: true,
+        createdFor: true,
+      },
+    });
+
+    const chatrooms = [...myCreaterooms, ...otherCreaterooms];
+
+    res.json({ ok: true, chatrooms });
   }
   if (req.method === "POST") {
     const {
@@ -19,6 +38,8 @@ async function handler(
       body: { createdForUser },
     } = req;
 
+    if (user?.id === createdForUser.id)
+      res.json({ ok: false, error: "자기 자신입니다." });
     const newRoom = await client.chatRoom.create({
       data: {
         createdBy: {
