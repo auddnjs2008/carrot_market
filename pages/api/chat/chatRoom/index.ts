@@ -16,6 +16,11 @@ async function handler(
       where: {
         createdById: user?.id,
       },
+      include: {
+        createdBy: true,
+        createdFor: true,
+        chats: true,
+      },
     });
 
     const otherCreaterooms = await client.chatRoom.findMany({
@@ -25,6 +30,7 @@ async function handler(
       include: {
         createdBy: true,
         createdFor: true,
+        chats: true,
       },
     });
 
