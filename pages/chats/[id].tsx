@@ -61,12 +61,12 @@ const ChatDetail: NextPage = () => {
 
 
   return (
-    <Layout canGoBack title={user?.id !== data?.chatRoomInfo.createdBy.id ?
+    <Layout seoTitle="Chat" canGoBack title={user?.id !== data?.chatRoomInfo.createdBy.id ?
       data?.chatRoomInfo.createdBy.name : data?.chatRoomInfo.createdFor.name}>
       <div className="py-10 pb-16 px-4 space-y-4">
         {data?.chatRoomInfo.chats.map(
           chat =>
-            <Message avatarUrl={chat.user.avatar ? `https://imagedelivery.net/gVd53M-5CbHwtF6A9rt30w/${chat.user.avatar}/avatar` : ""} message={chat.message} reversed={user?.id === chat.userId} />)}
+            <Message key={chat.id} avatarUrl={chat.user.avatar ? `https://imagedelivery.net/gVd53M-5CbHwtF6A9rt30w/${chat.user.avatar}/avatar` : ""} message={chat.message} reversed={user?.id === chat.userId} />)}
         <form onSubmit={handleSubmit(onValid)} className="fixed py-2 bg-white  bottom-0 inset-x-0">
           <div className="flex relative max-w-md items-center  w-full mx-auto">
             <input

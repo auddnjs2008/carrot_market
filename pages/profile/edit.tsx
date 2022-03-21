@@ -75,7 +75,7 @@ const EditProfile: NextPage = () => {
   }, [avatar]);
 
   return (
-    <Layout canGoBack title="Edit Profile">
+    <Layout seoTitle="Edit-Profile" canGoBack title="Edit Profile">
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
         <div className="flex items-center space-x-3">
           {avatarPreview ? <img src={avatarPreview} className="w-14 h-14 rounded-full bg-slate-500" /> : <div className="w-14 h-14 rounded-full bg-slate-500" />}

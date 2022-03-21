@@ -27,7 +27,7 @@ const Chats: NextPage = () => {
 
 
   return (
-    <Layout title="채팅" hasTabBar>
+    <Layout seoTitle="ChatRooms" title="채팅" hasTabBar>
       <div className="py-10 divide-y-[1px] ">
         {data?.chatrooms?.map((chatroom) => (
           <Link href={`/chats/${chatroom.id}`} key={chatroom.id}>

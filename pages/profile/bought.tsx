@@ -8,7 +8,7 @@ const Bought: NextPage = () => {
   const { user } = useUser();
 
   return (
-    <Layout title="구매내역" canGoBack>
+    <Layout seoTitle="Bought" title="구매내역" canGoBack>
       <div className="flex flex-col space-y-5 pb-10  divide-y">
         <ProductList kind="purchases" />
       </div>

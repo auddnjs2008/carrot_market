@@ -66,7 +66,7 @@ const Stream: NextPage = () => {
 
 
   return (
-    <Layout canGoBack>
+    <Layout seoTitle="Stream Detail" canGoBack>
       <div className="py-10 px-4  space-y-4">
 
         {data?.stream.cloudflareId ? <iframe
