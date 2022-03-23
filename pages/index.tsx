@@ -24,6 +24,8 @@ interface ProductsResponse {
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
   const { data } = useSWR<ProductsResponse>("/api/products")
+
+
   return (
     <Layout seoTitle="Home" title="홈" hasTabBar>
       <Head><title>Home</title></Head>
@@ -80,6 +82,7 @@ const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
 export async function getServerSideProps() {
   console.log("SSR");
   const products = await client.product.findMany({});
+
   return {
     props: {
       products: JSON.parse(JSON.stringify(products))
