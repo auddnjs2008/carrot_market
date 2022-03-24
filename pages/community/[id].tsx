@@ -178,6 +178,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
+  console.log("다시 실행");
   if (!ctx?.params?.id) {
     return {
       props: {}

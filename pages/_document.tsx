@@ -1,23 +1,21 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 
-class CustomDocument extends Document {
-
-    render(): JSX.Element {
-        console.log("Document is running");
-        return <Html>
-            <Head>
-                <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
-            </Head>
-            <body>
-                <Main />
-                <NextScript />
-            </body>
-        </Html>
-    }
+export default function MyDocument() {
+    console.log("Document is running");
+    return <Html>
+        <Head>
+            <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+        </Head>
+        <body>
+            <Main />
+            <NextScript />
+        </body>
+    </Html>
 }
 
-export default CustomDocument;
+
+
 
 //document 컴포넌트는 서버에서 한 번만 실행된다.
 // app 컴포넌트는 페이지를 불러올때마다 실행된다.

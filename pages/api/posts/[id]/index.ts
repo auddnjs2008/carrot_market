@@ -59,7 +59,7 @@ async function handler(
       },
     })
   );
-
+  res.unstable_revalidate(`/community/${id}`);
   res.json({ ok: true, post, isWondering });
 }
 
