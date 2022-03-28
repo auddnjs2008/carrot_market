@@ -24,8 +24,8 @@ function List() {
     const coins = fetchData("https://api.coinpaprika.com/v1/coins");
     return <div>
         <h4>List is done</h4>
-        <ul>{coins.slice(0, 10).map((coin: any) =>
-            <li>
+        <ul>{coins.slice(0, 10).map((coin: any, index: number) =>
+            <li key={index}>
                 <Suspense key={coin.id} fallback={`Coin ${coin.name} is loading`}>
                     <Coin key={coin.id} {...coin} />
                 </Suspense>
