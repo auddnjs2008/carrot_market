@@ -51,7 +51,7 @@ const Enter: NextPage = () => {
   }, [tokenData, router]);
   return (
     <div className="mt-16 px-4">
-      <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
+      <h3 className="text-3xl font-bold text-center">Welcome to my Carrot Baby</h3>
       <div className="mt-8">
         {data?.ok ? <form onSubmit={tokenHandleSubmit(onTokenValid)} className="flex flex-col mt-8 space-y-4">
           <Input required register={tokenRegister("token", { required: true })} name="token" label="Confirmation Token" type="number" />
