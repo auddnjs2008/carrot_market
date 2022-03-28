@@ -1,13 +1,12 @@
-import twilio from "twilio";
-import mail from "@sendgrid/mail"
+// import twilio from "twilio";
+// import mail from "@sendgrid/mail"
 import { NextApiRequest, NextApiResponse } from "next";
-import client from '@libs/server/client';
-import withHandler, { ResponseType } from '@libs/server/withHanler';
+import client from "@libs/server/client";
+import withHandler, { ResponseType } from "@libs/server/withHanler";
 
-mail.setApiKey(process.env.SENDGRID_API!);
+// mail.setApiKey(process.env.SENDGRID_API!);
 
-const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
-
+// const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 async function handler(
   req: NextApiRequest,
@@ -16,7 +15,7 @@ async function handler(
   const { phone, email } = req.body;
   const user = phone ? { phone } : email ? { email } : null;
   if (!user) return res.status(400).json({ ok: false });
-  const payload = Math.floor(100000 + Math.random() * 900000) + ""
+  const payload = Math.floor(100000 + Math.random() * 900000) + "";
 
   const token = await client.token.create({
     data: {
@@ -24,16 +23,16 @@ async function handler(
       user: {
         connectOrCreate: {
           where: {
-            ...user
+            ...user,
           },
           create: {
             name: "Anonymous",
-            ...user
+            ...user,
           },
-        }
-      }
-    }
-  })
+        },
+      },
+    },
+  });
   if (phone) {
     // const message = await twilioClient.messages.create({
     //   messagingServiceSid: process.env.TWILIO_MSID,
@@ -52,9 +51,8 @@ async function handler(
     // console.log(email);
   }
   return res.json({
-    ok: true
-  })
+    ok: true,
+  });
 }
 
 export default withHandler({ methods: ["POST"], handler, isPrivate: false });
-
